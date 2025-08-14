@@ -759,9 +759,9 @@ if ($action === 'download') {
               <!-- Dropzone -->
               <div class="space-y-2 max-w-md">
                 <label class="block text-sm font-medium">Your PDF</label>
-                <div class="mt-1"
-                     @dragover.prevent="drag=true" @dragleave.prevent="drag=false" @drop.prevent="onDrop($event)" @click="$refs.file.click()"
-                     :class="['group cursor-pointer border-2 border-dashed rounded-xl p-4 sm:p-6 transition', drag ? 'border-indigo-500 bg-indigo-50' : 'border-slate-300 bg-white hover:bg-slate-50']">
+       <div class="mt-1 group cursor-pointer border-2 border-dashed rounded-xl p-4 sm:p-6 transition border-slate-300 bg-white hover:bg-slate-50"
+         @dragover.prevent="drag=true" @dragleave.prevent="drag=false" @drop.prevent="onDrop($event)" @click="$refs.file.click()"
+         :class="drag ? 'border-indigo-500 bg-indigo-50' : ''">
                   <input id="file-input-main" type="file" x-ref="file" @change="onFile()" accept="application/pdf" class="hidden"/>
                   <div class="flex items-center gap-3 flex-wrap justify-start text-left">
                     <button type="button" @click.stop="$refs.file.click()" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-900 text-white group-hover:bg-slate-800">
@@ -777,44 +777,48 @@ if ($action === 'download') {
                 </div>
               </div>
 
-              <!-- Password + Actions in bordered box for visual parity -->
-              <div class="mt-4 max-w-md border-2 border-dashed rounded-xl p-4 sm:p-6 bg-white">
+              <!-- Password -->
+              <div class="max-w-md">
                 <label class="block text-sm font-medium mb-1">Password</label>
                 <input type="password" x-ref="pwd" minlength="1" required placeholder="Enter the PDF password"
                        class="bg-white rounded-lg w-full h-10 text-sm px-3 outline-none ring-1 ring-slate-300 focus:ring-2 focus:ring-indigo-600"/>
                 <p class="mt-1 text-xs text-slate-500">Used only to unlock your file during processing, then discarded.</p>
+              </div>
 
-                <div class="mt-3 flex flex-row flex-wrap items-center gap-2" :class="{'justify-start': align==='left','justify-center': align==='center','justify-end': align==='right'}">
+              <!-- Actions -->
+              <div class="max-w-md">
+                <div class="flex items-center gap-2" :class="{'justify-start': align==='left','justify-center': align==='center','justify-end': align==='right'}">
                   <button type="button" @click="reset()" :disabled="busy"
-                          class="px-3 py-2 rounded-xl border border-slate-300 text-slate-700 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed">Clear</button>
+                          class="px-3 py-2 rounded-xl border border-slate-300 text-slate-700 hover:bg-slate-50 disabled:opacity-50">Clear</button>
                   <button type="submit" :disabled="busy || !file"
-                          :class="['px-4 py-2 rounded-xl font-medium transition inline-flex items-center gap-2 whitespace-nowrap disabled:opacity-60 disabled:cursor-not-allowed',
+                          :class="['px-4 py-2 rounded-xl font-medium transition inline-flex items-center gap-2',
                                    busy ? 'bg-slate-300 text-slate-600' : 'bg-gradient-to-b from-indigo-600 to-indigo-500 text-white hover:from-indigo-500 hover:to-indigo-400']">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
                     <span x-text="busy ? 'Processing…' : 'Unlock PDF'">Unlock PDF</span>
                   </button>
                 </div>
-
-                <div class="mt-3 h-2 w-full bg-slate-100 rounded-full overflow-hidden" x-show="busy">
-                  <div class="h-full bg-indigo-500 transition-all" :style="`width:${progress}%`"></div>
-                </div>
-
-                <template x-if="downloadUrl">
-                  <div class="mt-3 border border-emerald-200 bg-emerald-50 text-emerald-800 rounded-lg p-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                    <div class="flex items-center gap-2">
-                      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-emerald-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
-                      <span class="text-sm">Your unlocked PDF is ready.</span>
-                    </div>
-                    <a :href="downloadUrl" class="text-sm inline-flex items-center justify-center px-3 py-1.5 rounded-md bg-emerald-600 text-white hover:bg-emerald-500">Download file</a>
-                  </div>
-                </template>
-
-                <template x-if="error">
-                  <div class="mt-2 text-sm text-rose-700" x-text="error"></div>
-                </template>
-
-                <p class="mt-3 text-xs text-slate-500">We recommend removing sensitive docs after download. Files auto-delete within ~1 hour. Do not use this tool for illegal purposes or to access documents you do not own or are not authorized to modify.</p>
               </div>
+
+              <!-- Progress -->
+              <div class="h-2 w-full bg-slate-100 rounded-full overflow-hidden" x-show="busy">
+                <div class="h-full bg-indigo-500 transition-all" :style="`width:${progress}%`"></div>
+              </div>
+
+              <template x-if="downloadUrl">
+                <div class="mt-2 border border-emerald-200 bg-emerald-50 text-emerald-800 rounded-lg p-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                  <div class="flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-emerald-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+                    <span class="text-sm">Your unlocked PDF is ready.</span>
+                  </div>
+                  <a :href="downloadUrl" class="text-sm inline-flex items-center justify-center px-3 py-1.5 rounded-md bg-emerald-600 text-white hover:bg-emerald-500">Download file</a>
+                </div>
+              </template>
+
+              <template x-if="error">
+                <div class="text-sm text-rose-700" x-text="error"></div>
+              </template>
+
+              <p class="text-xs text-slate-500">We recommend removing sensitive docs after download. Files auto-delete within ~1 hour. Do not use this tool for illegal purposes or to access documents you do not own or are not authorized to modify.</p>
 
               <!-- Plan messaging removed: fully free for now -->
             </form>
