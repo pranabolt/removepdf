@@ -685,7 +685,10 @@ if ($action === 'download') {
   <script src="https://cdn.tailwindcss.com" defer></script>
   <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
   <meta name="description" content="Unlock your own password-protected PDF securely. No signup."/>
-  <style>.glass{backdrop-filter: blur(12px)}</style>
+  <style>
+    .glass{backdrop-filter: blur(12px)}
+    [x-cloak]{display:none !important}
+  </style>
 </head>
 <body class="min-h-screen bg-gradient-to-b from-indigo-50 via-white to-slate-100 text-slate-900">
   <main class="px-6 py-12">
@@ -790,9 +793,9 @@ if ($action === 'download') {
                 <div class="flex items-center gap-2" :class="{'justify-start': align==='left','justify-center': align==='center','justify-end': align==='right'}">
                   <button type="button" @click="reset()" :disabled="busy"
                           class="px-3 py-2 rounded-xl border border-slate-300 text-slate-700 hover:bg-slate-50 disabled:opacity-50">Clear</button>
-                  <button type="submit" :disabled="busy || !file"
-                          :class="['px-4 py-2 rounded-xl font-medium transition inline-flex items-center gap-2',
-                                   busy ? 'bg-slate-300 text-slate-600' : 'bg-gradient-to-b from-indigo-600 to-indigo-500 text-white hover:from-indigo-500 hover:to-indigo-400']">
+      <button type="submit" :disabled="busy || !file"
+        class="px-4 py-2 rounded-xl font-medium transition inline-flex items-center gap-2 bg-gradient-to-b from-indigo-600 to-indigo-500 text-white hover:from-indigo-500 hover:to-indigo-400 disabled:opacity-60 disabled:cursor-not-allowed"
+        :class="busy ? 'bg-slate-300 text-slate-600 hover:from-none hover:to-none' : ''">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
                     <span x-text="busy ? 'Processing…' : 'Unlock PDF'">Unlock PDF</span>
                   </button>
@@ -800,7 +803,7 @@ if ($action === 'download') {
               </div>
 
               <!-- Progress -->
-              <div class="h-2 w-full bg-slate-100 rounded-full overflow-hidden" x-show="busy">
+              <div class="h-2 w-full bg-slate-100 rounded-full overflow-hidden" x-cloak x-show="busy">
                 <div class="h-full bg-indigo-500 transition-all" :style="`width:${progress}%`"></div>
               </div>
 
