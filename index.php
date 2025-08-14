@@ -14,9 +14,9 @@ declare(strict_types=1);
 session_start();
 
 // ---------------------------- CONFIG ----------------------------------------
-const MAX_SIZE_BYTES = 50 * 1024 * 1024;        // 50 MB (absolute cap)
-const FREE_MAX_SIZE_BYTES = 5 * 1024 * 1024;    // 5 MB (free tier)
-const PRO_MAX_SIZE_BYTES  = MAX_SIZE_BYTES;     // 50 MB (pro tier)
+const MAX_SIZE_BYTES = 1024 * 1024 * 1024;      // 1 GB soft cap (server/browser may still limit)
+const FREE_MAX_SIZE_BYTES = MAX_SIZE_BYTES;     // Free = full limit for now
+const PRO_MAX_SIZE_BYTES  = MAX_SIZE_BYTES;     // Same as free (future use)
 const FILE_TTL_SEC   = 3600;                    // 1 hour
 const STORAGE_DIR    = __DIR__ . '/_storage';   // auto-created: _storage/tmp, _storage/out
 const HOST_ALLOWLIST = [];                      // e.g. ['remove-password-from-pdf.com'] leave [] to allow any host
@@ -355,11 +355,9 @@ if ($action === 'process') {
     if ($f['error'] !== UPLOAD_ERR_OK) json_fail('Upload failed.');
   if ($f['size'] <= 0 || $f['size'] > MAX_SIZE_BYTES) json_fail('File too big or empty.');
 
-  // Plan-based gating
-  $limit = is_pro() ? PRO_MAX_SIZE_BYTES : FREE_MAX_SIZE_BYTES;
-  if ($f['size'] > $limit) {
-    $upgrade = site_url('index.php?action=checkout');
-    json_fail('This file exceeds the Free plan limit (' . (int)($limit / 1024 / 1024) . ' MB). Upgrade to Pro for up to ' . (int)(PRO_MAX_SIZE_BYTES/1024/1024) . ' MB: ' . $upgrade, 402);
+  // Allow large files up to MAX_SIZE_BYTES (tool is currently free for everyone)
+  if ($f['size'] > MAX_SIZE_BYTES) {
+    json_fail('File is too large. Maximum allowed is ' . (int)(MAX_SIZE_BYTES / 1024 / 1024) . ' MB.', 413);
   }
 
     $ext = strtolower(pathinfo((string)$f['name'], PATHINFO_EXTENSION));
@@ -412,68 +410,7 @@ if ($action === 'process') {
     exit;
 }
 
-if ($action === 'checkout') {
-  // ----------------------- CHECKOUT: Stripe Checkout (optional) ----------
-  $secret = get_env('STRIPE_SECRET_KEY');
-  $price  = get_env('STRIPE_PRICE_ID');
-
-  $success = site_url('index.php?action=success');
-  $cancel  = site_url('index.php');
-
-  if ($secret && $price) {
-    // Create a Checkout Session via Stripe API
-    $ch = curl_init('https://api.stripe.com/v1/checkout/sessions');
-    $payload = http_build_query([
-      'mode' => 'subscription',
-      'line_items[0][price]' => $price,
-      'line_items[0][quantity]' => 1,
-      'allow_promotion_codes' => 'true',
-      'success_url' => $success . '?session_id={CHECKOUT_SESSION_ID}',
-      'cancel_url' => $cancel,
-      'billing_address_collection' => 'auto',
-      'automatic_tax[enabled]' => 'true',
-    ]);
-    curl_setopt_array($ch, [
-      CURLOPT_HTTPAUTH => CURLAUTH_BASIC,
-      CURLOPT_USERPWD => $secret . ':',
-      CURLOPT_POST => true,
-      CURLOPT_POSTFIELDS => $payload,
-      CURLOPT_RETURNTRANSFER => true,
-    ]);
-    $res = curl_exec($ch);
-    $err = curl_error($ch);
-    $code = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    curl_close($ch);
-    if ($err || $code >= 400 || !$res) {
-      flash_set('error', 'Checkout is temporarily unavailable. Please try again later.');
-      header('Location: ' . $cancel, true, 302); exit;
-    }
-    $data = json_decode((string)$res, true) ?: [];
-    if (!empty($data['url'])) { header('Location: ' . $data['url'], true, 303); exit; }
-    flash_set('error', 'Unexpected response from payment provider.');
-    header('Location: ' . $cancel, true, 302); exit;
-  } else {
-    // Fallback demo: mark Pro in session for this browser only
-    $_SESSION['plan'] = 'pro';
-    flash_set('success', 'Pro enabled (demo mode). Set STRIPE_SECRET_KEY and STRIPE_PRICE_ID to enable real checkout.');
-    header('Location: ' . $success, true, 302); exit;
-  }
-}
-
-if ($action === 'success') {
-  // ----------------------- SUCCESS: finalize & show message --------------
-  // If Stripe keys exist and session_id is present, we could verify it here.
-  // For now, Pro is already set in checkout fallback. Keep it friendly.
-  if (!is_pro()) $_SESSION['plan'] = 'pro';
-  flash_set('success', '🎉 Pro is active on this browser. Enjoy higher limits and faster processing.');
-  header('Location: ' . site_url('index.php'), true, 302); exit;
-}
-
-if ($action === 'logout') {
-  $_SESSION['plan'] = 'free';
-  flash_set('success', 'Signed out. You are back on the Free plan.');
-  header('Location: ' . site_url('index.php'), true, 302); exit;
-}
+// Checkout/Pro features are disabled: the tool is fully free for now.
 
 // ----------------------- PAGES: blog, post, pricing, contact, terms, privacy
 if ($action === 'blog') {
@@ -512,7 +449,6 @@ if ($action === 'blog') {
   <footer class="py-6 text-center text-sm text-slate-600">
     © <script>document.write(new Date().getFullYear())</script> Remove Password from PDF ·
     <a class="hover:underline" href="index.php?action=blog">Blog</a> ·
-    <a class="hover:underline" href="index.php?action=pricing">Pricing</a> ·
     <a class="hover:underline" href="index.php?action=contact">Contact</a> ·
     <a class="hover:underline" href="index.php?action=terms">Terms</a> ·
     <a class="hover:underline" href="index.php?action=privacy">Privacy</a>
@@ -560,7 +496,6 @@ if ($action === 'post') {
   <footer class="py-6 text-center text-sm text-slate-600">
     © <script>document.write(new Date().getFullYear())</script> Remove Password from PDF ·
     <a class="hover:underline" href="index.php?action=blog">Blog</a> ·
-    <a class="hover:underline" href="index.php?action=pricing">Pricing</a> ·
     <a class="hover:underline" href="index.php?action=contact">Contact</a> ·
     <a class="hover:underline" href="index.php?action=terms">Terms</a> ·
     <a class="hover:underline" href="index.php?action=privacy">Privacy</a>
@@ -568,9 +503,8 @@ if ($action === 'post') {
   exit;
 }
 
-if ($action === 'pricing' || $action === 'contact' || $action === 'terms' || $action === 'privacy') {
+if ($action === 'contact' || $action === 'terms' || $action === 'privacy') {
   $map = [
-    'pricing' => ['title' => 'Pricing — Remove Password from PDF', 'desc' => 'Simple pricing. Free up to 5 MB. Pro up to 50 MB with priority processing.'],
     'contact' => ['title' => 'Contact — Remove Password from PDF', 'desc' => 'Get in touch with our team.'],
     'terms'   => ['title' => 'Terms — Remove Password from PDF',   'desc' => 'Terms of Service.'],
     'privacy' => ['title' => 'Privacy — Remove Password from PDF', 'desc' => 'Our privacy practices explained clearly.'],
@@ -595,18 +529,7 @@ if ($action === 'pricing' || $action === 'contact' || $action === 'terms' || $ac
         <nav class="text-sm"><a class="text-indigo-700 hover:underline" href="index.php">Home</a></nav>
       </div>
 
-      <?php if ($action==='pricing'): ?>
-        <h1 class="text-2xl font-semibold mt-6">Pricing</h1>
-        <div class="mt-4 text-slate-700">
-          <p>Free: up to 5 MB. Standard speed.</p>
-          <p class="mt-2">Pro: up to 50 MB, faster processing, priority support.</p>
-          <?php if (!is_pro()): ?>
-            <a href="index.php?action=checkout" class="inline-block mt-4 px-4 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-500">Get Pro</a>
-          <?php else: ?>
-            <span class="inline-block mt-4 px-3 py-1.5 rounded-lg bg-emerald-600 text-white">Pro active</span>
-          <?php endif; ?>
-        </div>
-      <?php elseif ($action==='contact'): ?>
+  <?php if ($action==='contact'): ?>
         <h1 class="text-2xl font-semibold mt-6">Contact</h1>
         <div class="mt-4 text-slate-700">
           <p>Questions or billing help? Email us at <a class="text-indigo-700 hover:underline" href="mailto:support@yourdomain.com">support@yourdomain.com</a>.</p>
@@ -616,6 +539,7 @@ if ($action === 'pricing' || $action === 'contact' || $action === 'terms' || $ac
         <h1 class="text-2xl font-semibold mt-6">Terms of Service</h1>
         <div class="mt-4 text-slate-700 space-y-3">
           <p>By using this service, you agree to provide only PDFs you own or control. We do not crack passwords; you must supply the correct one.</p>
+          <p><strong>Illegal use is prohibited.</strong> Do not use this service to access, modify, or distribute documents without authorization. You are responsible for complying with all applicable laws and policies.</p>
           <p>Service is provided “as is” without warranties. Limitations of liability apply to the extent permitted by law.</p>
           <p>We may update these terms; continued use means acceptance of changes.</p>
         </div>
@@ -632,7 +556,6 @@ if ($action === 'pricing' || $action === 'contact' || $action === 'terms' || $ac
   <footer class="py-6 text-center text-sm text-slate-600">
     © <script>document.write(new Date().getFullYear())</script> Remove Password from PDF ·
     <a class="hover:underline" href="index.php?action=blog">Blog</a> ·
-    <a class="hover:underline" href="index.php?action=pricing">Pricing</a> ·
     <a class="hover:underline" href="index.php?action=contact">Contact</a> ·
     <a class="hover:underline" href="index.php?action=terms">Terms</a> ·
     <a class="hover:underline" href="index.php?action=privacy">Privacy</a>
@@ -691,16 +614,10 @@ if ($action === 'download') {
             <div class="w-9 h-9 rounded-xl bg-gradient-to-b from-indigo-600 to-violet-600 text-white grid place-items-center font-bold">RP</div>
             <div class="leading-tight">
               <div class="text-base font-semibold">Remove Password from PDF</div>
-              <div class="text-xs text-slate-500">Fast • Private • Free up to 5 MB</div>
+              <div class="text-xs text-slate-500">Fast • Private • Free for everyone</div>
             </div>
           </a>
-          <nav class="flex items-center gap-4 text-sm font-medium">
-            <?php if (is_pro()): ?>
-              <a href="index.php?action=logout" class="text-emerald-700 hover:underline">Pro active</a>
-            <?php else: ?>
-              <a href="index.php?action=checkout" class="text-indigo-700 hover:underline">Get Pro</a>
-            <?php endif; ?>
-          </nav>
+          <nav class="flex items-center gap-4 text-sm font-medium"></nav>
         </div>
         <div class="grid md:grid-cols-2 gap-10 items-start">
           <div class="order-2 md:order-1">
@@ -716,15 +633,9 @@ if ($action === 'download') {
               <li class="flex items-center gap-2"><span class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 grid place-items-center text-xs">✓</span> Files auto-delete in ~1 hour</li>
               <li class="flex items-center gap-2"><span class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 grid place-items-center text-xs">✓</span> Password never stored</li>
               <li class="flex items-center gap-2"><span class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 grid place-items-center text-xs">✓</span> No signup or install</li>
-              <li class="flex items-center gap-2"><span class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 grid place-items-center text-xs">✓</span> Free up to 5 MB</li>
+              <li class="flex items-center gap-2"><span class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 grid place-items-center text-xs">✓</span> Large files supported (no signup)</li>
             </ul>
-            <div class="mt-6 flex gap-3">
-              <?php if (!is_pro()): ?>
-                <a href="index.php?action=checkout" class="px-4 py-2 rounded-xl bg-indigo-600 text-white hover:bg-indigo-500">Upgrade to Pro</a>
-              <?php else: ?>
-                <span class="px-3 py-1.5 rounded-lg bg-emerald-600 text-white">Pro active</span>
-              <?php endif; ?>
-            </div>
+            <div class="mt-6 flex gap-3"></div>
           </div>
 
           <!-- APP CARD -->
@@ -746,7 +657,7 @@ if ($action === 'download') {
                     </button>
                     <span class="text-sm text-slate-700 font-medium underline decoration-dashed underline-offset-4">or drag & drop your .pdf</span>
                   </div>
-                  <div class="mt-2 text-xs text-slate-500">PDF only • Free up to 5 MB<?php echo is_pro() ? ' • Pro up to 50 MB' : ''; ?></div>
+                  <div class="mt-2 text-xs text-slate-500">PDF only • Generous file sizes supported</div>
                   <template x-if="fileName">
                     <div class="mt-1 text-sm font-medium text-indigo-700" x-text="fileName"></div>
                   </template>
@@ -794,25 +705,9 @@ if ($action === 'download') {
                 <div class="text-sm text-rose-700" x-text="error"></div>
               </template>
 
-              <p class="text-xs text-slate-500">We recommend removing sensitive docs after download. Files auto-delete within ~1 hour.</p>
+              <p class="text-xs text-slate-500">We recommend removing sensitive docs after download. Files auto-delete within ~1 hour. Do not use this tool for illegal purposes or to access documents you do not own or are not authorized to modify.</p>
 
-              <!-- Inline Pro benefits (single page, no separate pricing block) -->
-              <div class="pt-3">
-                <div class="flex items-center gap-2 text-sm text-slate-600">
-                  <div>Free up to 5 MB.</div>
-                  <?php if (!is_pro()): ?>
-                    <button type="button" @click="showBenefits=!showBenefits" class="text-indigo-700 hover:underline">See Pro benefits</button>
-                  <?php else: ?>
-                    <span class="text-emerald-700">Pro active: up to 50 MB.</span>
-                  <?php endif; ?>
-                </div>
-                <?php if (!is_pro()): ?>
-                <div x-show="showBenefits" class="mt-2 text-sm text-slate-700">
-                  • Files up to 50 MB • Faster processing • Priority support
-                  <a href="index.php?action=checkout" class="ml-2 inline-flex items-center gap-1 text-indigo-700 underline">Get Pro</a>
-                </div>
-                <?php endif; ?>
-              </div>
+              <!-- Plan messaging removed: fully free for now -->
             </form>
           </div>
         </div>
@@ -857,13 +752,9 @@ if ($action === 'download') {
           if (!f.name.toLowerCase().endsWith('.pdf')) {
             this.error = 'Only PDF files are allowed.'; this.$refs.file.value = ''; this.file = null; this.fileName = ''; return;
           }
-          // Soft client-side size guard to hint about plan limits
-          const freeLimit = <?php echo (int)(FREE_MAX_SIZE_BYTES); ?>;
-          const isPro = <?php echo is_pro() ? 'true' : 'false'; ?>;
-          if (!isPro && f.size > freeLimit) {
-            this.error = 'This file is larger than the Free limit (5 MB). Please choose a smaller file or upgrade to Pro.';
-            this.file = null; this.fileName = ''; return;
-          }
+          // Optional soft guard: extremely large files may fail in browser limits
+          const maxLimit = <?php echo (int)(MAX_SIZE_BYTES); ?>;
+          if (f.size > maxLimit) { this.error = 'File is larger than the maximum allowed size.'; this.file = null; this.fileName = ''; return; }
           this.error = ''; this.file = f; this.fileName = f.name;
         },
         onDrop(e) {
@@ -871,9 +762,8 @@ if ($action === 'download') {
           const f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
           if (!f) return;
           if (!f.name.toLowerCase().endsWith('.pdf')) { this.error = 'Only PDF files are allowed.'; this.file = null; this.fileName = ''; return; }
-          const freeLimit = <?php echo (int)(FREE_MAX_SIZE_BYTES); ?>;
-          const isPro = <?php echo is_pro() ? 'true' : 'false'; ?>;
-          if (!isPro && f.size > freeLimit) { this.error = 'This file is larger than the Free limit (5 MB). Please choose a smaller file or upgrade to Pro.'; this.file = null; this.fileName = ''; return; }
+          const maxLimit = <?php echo (int)(MAX_SIZE_BYTES); ?>;
+          if (f.size > maxLimit) { this.error = 'File is larger than the maximum allowed size.'; this.file = null; this.fileName = ''; return; }
           this.error = ''; this.file = f; this.fileName = f.name;
         },
         async submit() {
