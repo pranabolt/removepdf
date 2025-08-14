@@ -492,8 +492,8 @@ if ($action === 'blog') {
   <title><?php echo htmlspecialchars($title); ?></title>
   <meta name="description" content="<?php echo htmlspecialchars($desc); ?>"/>
   <script src="https://cdn.tailwindcss.com"></script>
-  </head><body class="min-h-screen bg-gradient-to-b from-indigo-50 via-white to-slate-100 text-slate-900">
-  <main class="px-6 py-12">
+  </head><body class="min-h-screen flex flex-col bg-gradient-to-b from-indigo-50 via-white to-slate-100 text-slate-900">
+  <main class="flex-1 px-6 py-12">
     <section class="max-w-5xl mx-auto">
       <div class="flex justify-between items-center py-2">
         <a href="index.php" aria-label="Go to home" class="flex items-center gap-3 hover:opacity-90">
@@ -552,8 +552,8 @@ if ($action === 'post') {
     "datePublished": <?php echo json_encode($post['date']); ?>,
     "author": {"@type":"Organization","name":"Remove Password from PDF"}
   }</script>
-  </head><body class="min-h-screen bg-gradient-to-b from-indigo-50 via-white to-slate-100 text-slate-900">
-  <main class="px-6 py-12">
+  </head><body class="min-h-screen flex flex-col bg-gradient-to-b from-indigo-50 via-white to-slate-100 text-slate-900">
+  <main class="flex-1 px-6 py-12">
     <section class="max-w-3xl mx-auto">
       <div class="flex justify-between items-center py-2">
         <div class="flex items-center gap-3">
@@ -602,8 +602,8 @@ if ($action === 'contact' || $action === 'terms' || $action === 'privacy') {
   <title><?php echo htmlspecialchars($meta['title']); ?></title>
   <meta name="description" content="<?php echo htmlspecialchars($meta['desc']); ?>"/>
   <script src="https://cdn.tailwindcss.com"></script>
-  </head><body class="min-h-screen bg-gradient-to-b from-indigo-50 via-white to-slate-100 text-slate-900">
-  <main class="px-6 py-12">
+  </head><body class="min-h-screen flex flex-col bg-gradient-to-b from-indigo-50 via-white to-slate-100 text-slate-900">
+  <main class="flex-1 px-6 py-12">
     <section class="max-w-3xl mx-auto">
       <div class="flex justify-between items-center py-2">
         <div class="flex items-center gap-3">
@@ -733,6 +733,18 @@ if ($action === 'download') {
               <li class="flex items-center gap-2"><span class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 grid place-items-center text-xs">✓</span> No signup or install</li>
               <li class="flex items-center gap-2"><span class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 grid place-items-center text-xs">✓</span> Large files supported (no signup)</li>
             </ul>
+            <!-- CTA just below the four lines -->
+            <div class="mt-6">
+              <label class="block text-sm font-medium">Your PDF</label>
+              <div class="mt-2 flex items-center gap-3 flex-wrap">
+                <button type="button" onclick="document.getElementById('file-input-main')?.click()" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-900 text-white hover:bg-slate-800">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+                  Choose PDF
+                </button>
+                <span class="text-sm text-slate-700 font-medium underline decoration-dashed underline-offset-4">or drag & drop your .pdf</span>
+              </div>
+              <div class="mt-1 text-xs text-slate-500">PDF only • Max ~<?php echo (int)(effective_upload_limit_bytes() / 1024 / 1024); ?> MB (server limit)</div>
+            </div>
             <div class="mt-6 flex gap-3"></div>
           </div>
 
@@ -748,7 +760,7 @@ if ($action === 'download') {
                 <div class="mt-1"
                      @dragover.prevent="drag=true" @dragleave.prevent="drag=false" @drop.prevent="onDrop($event)" @click="$refs.file.click()"
                      :class="['group cursor-pointer border-2 border-dashed rounded-xl p-4 sm:p-6 transition', drag ? 'border-indigo-500 bg-indigo-50' : 'border-slate-300 bg-white hover:bg-slate-50']">
-                  <input type="file" x-ref="file" @change="onFile()" accept="application/pdf" class="hidden"/>
+                  <input id="file-input-main" type="file" x-ref="file" @change="onFile()" accept="application/pdf" class="hidden"/>
                   <div class="flex items-center gap-3 flex-wrap justify-start text-left">
                     <button type="button" @click.stop="$refs.file.click()" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-900 text-white group-hover:bg-slate-800">
                       <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
@@ -818,7 +830,7 @@ if ($action === 'download') {
   <footer class="py-6 text-center text-sm text-slate-600">
     © <script>document.write(new Date().getFullYear())</script> Remove Password from PDF ·
     <a class="hover:underline" href="index.php?action=blog">Blog</a> ·
-    <a class="hover:underline" href="index.php?action=pricing">Pricing</a> ·
+    
     <a class="hover:underline" href="index.php?action=contact">Contact</a> ·
     <a class="hover:underline" href="index.php?action=terms">Terms</a> ·
     <a class="hover:underline" href="index.php?action=privacy">Privacy</a>
