@@ -22,6 +22,18 @@ const STORAGE_DIR    = __DIR__ . '/_storage';   // auto-created: _storage/tmp, _
 const HOST_ALLOWLIST = [];                      // e.g. ['remove-password-from-pdf.com'] leave [] to allow any host
 // -----------------------------------------------------------------------------
 
+// Production-safe defaults
+@ini_set('display_errors', '0');
+@ini_set('expose_php', '0');
+
+function send_common_headers(): void {
+  header('X-Content-Type-Options: nosniff');
+  header('X-Frame-Options: DENY');
+  header('Referrer-Policy: strict-origin-when-cross-origin');
+  // CSP allows our own page plus Tailwind CDN and Alpine CDN; inline is used for small scripts/styles
+  header("Content-Security-Policy: default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://unpkg.com; connect-src 'self'; base-uri 'self'; form-action 'self'");
+}
+
 // Ensure storage folders exist
 @mkdir(STORAGE_DIR, 0775, true);
 @mkdir(STORAGE_DIR . '/tmp', 0775, true);
@@ -81,6 +93,60 @@ function get_env(string $key, ?string $default = null): ?string {
   $v = getenv($key);
   if ($v === false || $v === '') return $default;
   return $v;
+}
+
+function csrf_token(): string {
+  if (empty($_SESSION['csrf'])) {
+    $_SESSION['csrf'] = bin2hex(random_bytes(16));
+  }
+  return (string)$_SESSION['csrf'];
+}
+
+function parse_ini_bytes(string $val): int {
+  $val = trim($val);
+  if ($val === '') return 0;
+  $unit = strtolower(substr($val, -1));
+  $num  = (int)$val;
+  return match($unit) {
+    'g' => $num * 1024 * 1024 * 1024,
+    'm' => $num * 1024 * 1024,
+    'k' => $num * 1024,
+    default => (int)$val,
+  };
+}
+
+function effective_upload_limit_bytes(): int {
+  $upload = parse_ini_bytes((string)ini_get('upload_max_filesize'));
+  $post   = parse_ini_bytes((string)ini_get('post_max_size'));
+  $mem    = parse_ini_bytes((string)ini_get('memory_limit'));
+  $candidates = array_filter([$upload, $post, $mem], fn($v) => $v > 0);
+  $min = $candidates ? min($candidates) : MAX_SIZE_BYTES;
+  return min($min, MAX_SIZE_BYTES);
+}
+
+function rate_limit_check(string $bucket, int $limit, int $windowSec): bool {
+  $dir = STORAGE_DIR . '/rate';
+  @mkdir($dir, 0775, true);
+  $ip  = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
+  $key = preg_replace('/[^A-Za-z0-9_\-\.]/', '_', $bucket . '_' . $ip);
+  $file = $dir . '/' . $key . '.json';
+  $now = time();
+  $data = ['start' => $now, 'count' => 0];
+  $fp = @fopen($file, 'c+');
+  if (!$fp) return true; // fail-open to avoid blocking legit users
+  @flock($fp, LOCK_EX);
+  $raw = stream_get_contents($fp);
+  if ($raw) {
+    $tmp = json_decode($raw, true);
+    if (is_array($tmp) && isset($tmp['start'], $tmp['count'])) $data = $tmp;
+  }
+  if ($now - (int)$data['start'] > $windowSec) {
+    $data = ['start' => $now, 'count' => 0];
+  }
+  $data['count'] = (int)$data['count'] + 1;
+  $ok = $data['count'] <= $limit;
+  ftruncate($fp, 0); rewind($fp); fwrite($fp, json_encode($data)); fflush($fp); @flock($fp, LOCK_UN); fclose($fp);
+  return $ok;
 }
 
 // Simple blog content (SEO-friendly, no DB)
@@ -330,6 +396,9 @@ $BLOG_POSTS = [
   ],
 ];
 
+// Send common security headers
+send_common_headers();
+
 // Router (single file)
 $action = $_POST['action'] ?? ($_GET['action'] ?? '');
 
@@ -344,7 +413,9 @@ if ($action === 'process') {
     // ----------------------- PROCESS: unlock PDF ----------------------------
     header('Content-Type: application/json');
 
-    if ($_SERVER['REQUEST_METHOD'] !== 'POST') json_fail('Invalid method', 405);
+  if (!rate_limit_check('process', 30, 60)) json_fail('Too many requests. Please wait a minute and try again.', 429);
+  if ($_SERVER['REQUEST_METHOD'] !== 'POST') json_fail('Invalid method', 405);
+  if (!hash_equals((string)($_POST['csrf'] ?? ''), csrf_token())) json_fail('Invalid session. Refresh and try again.', 403);
     if (!isset($_FILES['pdf']) || !isset($_POST['password'])) json_fail('Missing file or password.');
 
     $pwd = trim((string)($_POST['password'] ?? ''));
@@ -413,6 +484,7 @@ if ($action === 'process') {
 
 // ----------------------- PAGES: blog, post, pricing, contact, terms, privacy
 if ($action === 'blog') {
+  header('Cache-Control: public, max-age=600');
   $title = 'Blog — Remove Password from PDF';
   $desc  = 'Privacy-first tips and product updates.';
   ?><!DOCTYPE html><html lang="en"><head>
@@ -463,6 +535,7 @@ if ($action === 'blog') {
 }
 
 if ($action === 'post') {
+  header('Cache-Control: public, max-age=600');
   $slug = (string)($_GET['slug'] ?? '');
   $post = null; foreach ($BLOG_POSTS as $p) { if ($p['slug'] === $slug) { $post = $p; break; } }
   if (!$post) { http_response_code(404); echo 'Post not found'; exit; }
@@ -517,6 +590,7 @@ if ($action === 'post') {
 }
 
 if ($action === 'contact' || $action === 'terms' || $action === 'privacy') {
+  header('Cache-Control: public, max-age=600');
   $map = [
     'contact' => ['title' => 'Contact — Remove Password from PDF', 'desc' => 'Get in touch with our team.'],
     'terms'   => ['title' => 'Terms — Remove Password from PDF',   'desc' => 'Terms of Service.'],
@@ -588,10 +662,14 @@ if ($action === 'download') {
         http_response_code(404); echo 'Not found.'; exit;
     }
 
-    header('Content-Type: application/pdf');
+  header('Content-Type: application/pdf');
+  header('X-Content-Type-Options: nosniff');
+  header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+  header('Pragma: no-cache');
     header('Content-Disposition: attachment; filename="unlocked.pdf"');
     header('Content-Length: ' . filesize($path));
-    readfile($path);
+  $fp = fopen($path, 'rb');
+  if ($fp) { fpassthru($fp); fclose($fp); }
     @unlink($path);
     exit;
 }
@@ -604,8 +682,8 @@ if ($action === 'download') {
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Remove Password from PDF — Fast, Private PDF unlocker</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <script src="https://cdn.tailwindcss.com" defer></script>
+  <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
   <meta name="description" content="Unlock your own password-protected PDF securely. No signup."/>
   <style>.glass{backdrop-filter: blur(12px)}</style>
 </head>
@@ -662,6 +740,7 @@ if ($action === 'download') {
           <div x-data="uploader()" :class="{'text-left': align==='left','text-center': align==='center','text-right': align==='right'}" class="p-0 order-1 md:order-2">
             <form class="space-y-4" @submit.prevent="submit()">
               <input type="hidden" name="action" value="process" />
+              <input type="hidden" name="csrf" value="<?php echo htmlspecialchars(csrf_token(), ENT_QUOTES); ?>" />
 
               <!-- Dropzone -->
               <div class="space-y-2 max-w-md">
@@ -677,7 +756,7 @@ if ($action === 'download') {
                     </button>
                     <span class="text-sm text-slate-700 font-medium underline decoration-dashed underline-offset-4">or drag & drop your .pdf</span>
                   </div>
-                  <div class="mt-2 text-xs text-slate-500">PDF only • Generous file sizes supported</div>
+                  <div class="mt-2 text-xs text-slate-500">PDF only • Max ~<?php echo (int)(effective_upload_limit_bytes() / 1024 / 1024); ?> MB (server limit)</div>
                   <template x-if="fileName">
                     <div class="mt-1 text-sm font-medium text-indigo-700" x-text="fileName"></div>
                   </template>
@@ -773,7 +852,7 @@ if ($action === 'download') {
             this.error = 'Only PDF files are allowed.'; this.$refs.file.value = ''; this.file = null; this.fileName = ''; return;
           }
           // Optional soft guard: extremely large files may fail in browser limits
-          const maxLimit = <?php echo (int)(MAX_SIZE_BYTES); ?>;
+          const maxLimit = <?php echo (int)(effective_upload_limit_bytes()); ?>;
           if (f.size > maxLimit) { this.error = 'File is larger than the maximum allowed size.'; this.file = null; this.fileName = ''; return; }
           this.error = ''; this.file = f; this.fileName = f.name;
         },
@@ -782,7 +861,7 @@ if ($action === 'download') {
           const f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
           if (!f) return;
           if (!f.name.toLowerCase().endsWith('.pdf')) { this.error = 'Only PDF files are allowed.'; this.file = null; this.fileName = ''; return; }
-          const maxLimit = <?php echo (int)(MAX_SIZE_BYTES); ?>;
+          const maxLimit = <?php echo (int)(effective_upload_limit_bytes()); ?>;
           if (f.size > maxLimit) { this.error = 'File is larger than the maximum allowed size.'; this.file = null; this.fileName = ''; return; }
           this.error = ''; this.file = f; this.fileName = f.name;
         },
