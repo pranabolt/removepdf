@@ -1,0 +1,14 @@
+# OS
+.DS_Store
+
+# Local servers/logs
+phpserver.pid
+/tmp/
+*.log
+
+# Storage outputs (ephemeral)
+_storage/tmp/
+_storage/out/
+
+# Node/Tailwind cache if added later
+node_modules/
