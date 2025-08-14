@@ -231,6 +231,104 @@ $BLOG_POSTS = [
                  </ul>
                  <p class="mt-4">When you’re ready, <a class="text-indigo-700 hover:underline" href="index.php">remove a PDF password</a> in seconds.</p>'
   ],
+  [
+    'slug' => 'how-do-i-remove-password-protection-from-pdf',
+    'title' => 'How Do I Remove Password Protection from PDF?',
+    'description' => 'Direct, step‑by‑step answer with privacy notes for removing password protection from a PDF you own.',
+    'date' => '2025-08-17',
+    'content' => '<p>If you are asking “how do I remove password protection from PDF,” the key is that you must already know the password. Once entered, you can save an unlocked copy and skip future prompts.</p>
+                 <h2 class="text-lg font-semibold mt-6">Quick steps</h2>
+                 <ol class="list-decimal pl-6 text-slate-700">
+                   <li>Open the tool in your browser.</li>
+                   <li>Upload the PDF and enter the correct password.</li>
+                   <li>Download the unlocked version.</li>
+                 </ol>
+                 <h2 class="text-lg font-semibold mt-6">Privacy and limits</h2>
+                 <p>We process your file briefly to remove protection, never store your password, and auto‑delete uploads after a short period. Free plan limits apply for large files.</p>'
+  ],
+  [
+    'slug' => 'how-to-remove-password-from-pdf-file',
+    'title' => 'How to Remove Password from PDF File',
+    'description' => 'Clear guide to remove a password from a PDF file you own, with tips for common errors.',
+    'date' => '2025-08-18',
+    'content' => '<p>Looking for how to remove password from PDF file? If you own the document and know the password, you can unlock it in a few clicks and save a clean copy.</p>
+                 <h2 class="text-lg font-semibold mt-6">Guide</h2>
+                 <ol class="list-decimal pl-6 text-slate-700">
+                   <li>Select your password‑protected PDF.</li>
+                   <li>Enter the correct password.</li>
+                   <li>Click to unlock and download.</li>
+                 </ol>
+                 <h2 class="text-lg font-semibold mt-6">Fixing issues</h2>
+                 <ul class="list-disc pl-6 text-slate-700">
+                   <li>Re‑type the password carefully if you see an error.</li>
+                   <li>Try a fresh copy of the PDF if it appears corrupted.</li>
+                   <li>Upgrade if your file exceeds the Free plan size.</li>
+                 </ul>'
+  ],
+  [
+    'slug' => 'how-do-i-remove-a-password-from-a-pdf-file',
+    'title' => 'How Do I Remove a Password from a PDF File?',
+    'description' => 'Simple steps to remove a password from a PDF file you own, plus FAQs.',
+    'date' => '2025-08-19',
+    'content' => '<p>“How do I remove a password from a PDF file?” Enter the correct password once, unlock, and save an open copy. Here’s the quick process and answers to common questions.</p>
+                 <h2 class="text-lg font-semibold mt-6">Process</h2>
+                 <ol class="list-decimal pl-6 text-slate-700">
+                   <li>Upload your PDF file.</li>
+                   <li>Provide the correct password.</li>
+                   <li>Download the unlocked file.</li>
+                 </ol>
+                 <h2 class="text-lg font-semibold mt-6">FAQs</h2>
+                 <ul class="list-disc pl-6 text-slate-700">
+                   <li><strong>Can you crack it?</strong> No—you must know the password.</li>
+                   <li><strong>Is the password stored?</strong> No, it is used only during processing.</li>
+                   <li><strong>How long are files kept?</strong> Uploads are auto‑deleted shortly after processing.</li>
+                 </ul>'
+  ],
+  [
+    'slug' => 'how-to-remove-password-from-password-protected-pdf',
+    'title' => 'How to Remove Password from a Password‑Protected PDF',
+    'description' => 'Unlock a PDF you own by entering its password and saving an unprotected copy.',
+    'date' => '2025-08-20',
+    'content' => '<p>To remove password from a password‑protected PDF, you must have the correct password. Once verified, you can save an unlocked version for faster access.</p>
+                 <h2 class="text-lg font-semibold mt-6">Steps</h2>
+                 <ol class="list-decimal pl-6 text-slate-700">
+                   <li>Upload the protected PDF.</li>
+                   <li>Enter the correct password.</li>
+                   <li>Download your unlocked copy.</li>
+                 </ol>
+                 <p class="mt-4">Only remove protection from files you own or are authorized to modify.</p>'
+  ],
+  [
+    'slug' => 'how-to-remove-password-protect-from-pdf',
+    'title' => 'Remove Password Protection from a PDF (Quick Guide)',
+    'description' => 'A concise guide often searched as “how to remove password protect from pdf.”',
+    'date' => '2025-08-21',
+    'content' => '<p>Many people search “how to remove password protect from pdf.” The phrasing may vary, but the steps are the same: if you know the password, you can remove protection and save a clean copy.</p>
+                 <h2 class="text-lg font-semibold mt-6">Quick guide</h2>
+                 <ol class="list-decimal pl-6 text-slate-700">
+                   <li>Upload your PDF.</li>
+                   <li>Type the correct password.</li>
+                   <li>Download the unlocked PDF.</li>
+                 </ol>
+                 <p class="mt-4">For sensitive documents, delete local copies when finished and keep a secure backup of the original.</p>'
+  ],
+  [
+    'slug' => 'how-to-remove-a-password-from-a-pdf-mac-windows-mobile',
+    'title' => 'How to Remove a Password from a PDF (Mac, Windows, Mobile)',
+    'description' => 'Platform‑specific tips for removing a password from a PDF on desktop and mobile.',
+    'date' => '2025-08-22',
+    'content' => '<p>Here’s how to remove a password from a PDF whether you are on Mac, Windows, iOS, or Android—always assuming you know the correct password and own the file.</p>
+                 <h2 class="text-lg font-semibold mt-6">Mac & Windows</h2>
+                 <ul class="list-disc pl-6 text-slate-700">
+                   <li>Use the browser‑based tool to upload, authenticate with the password, and download the unlocked copy.</li>
+                   <li>Keep both the original (protected) and the unlocked version organized.</li>
+                 </ul>
+                 <h2 class="text-lg font-semibold mt-6">Mobile (iOS & Android)</h2>
+                 <ul class="list-disc pl-6 text-slate-700">
+                   <li>Open the site in your mobile browser, select the PDF from Files or a cloud drive, enter the password, and download.</li>
+                   <li>On mobile, consider clearing downloads after use if the document is sensitive.</li>
+                 </ul>'
+  ],
 ];
 
 // Router (single file)
