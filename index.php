@@ -734,16 +734,18 @@ if ($action === 'download') {
               <li class="flex items-center gap-2"><span class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 grid place-items-center text-xs">✓</span> Large files supported (no signup)</li>
             </ul>
             <!-- CTA just below the four lines -->
-            <div class="mt-6">
+            <div class="mt-6 max-w-md">
               <label class="block text-sm font-medium">Your PDF</label>
-              <div class="mt-2 flex items-center gap-3 flex-wrap">
-                <button type="button" onclick="document.getElementById('file-input-main')?.click()" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-900 text-white hover:bg-slate-800">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
-                  Choose PDF
-                </button>
-                <span class="text-sm text-slate-700 font-medium underline decoration-dashed underline-offset-4">or drag & drop your .pdf</span>
+              <div class="mt-1 group cursor-pointer border-2 border-dashed rounded-xl p-4 sm:p-6 transition bg-white hover:bg-slate-50 border-slate-300" onclick="document.getElementById('file-input-main')?.click()">
+                <div class="flex items-center gap-3 flex-wrap">
+                  <button type="button" onclick="document.getElementById('file-input-main')?.click()" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-900 text-white group-hover:bg-slate-800">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+                    Choose PDF
+                  </button>
+                  <span class="text-sm text-slate-700 font-medium underline decoration-dashed underline-offset-4">or drag & drop your .pdf</span>
+                </div>
+                <div class="mt-2 text-xs text-slate-500">PDF only • Max ~<?php echo (int)(effective_upload_limit_bytes() / 1024 / 1024); ?> MB (server limit)</div>
               </div>
-              <div class="mt-1 text-xs text-slate-500">PDF only • Max ~<?php echo (int)(effective_upload_limit_bytes() / 1024 / 1024); ?> MB (server limit)</div>
             </div>
             <div class="mt-6 flex gap-3"></div>
           </div>
@@ -792,7 +794,7 @@ if ($action === 'download') {
                           :class="['px-4 py-2 rounded-xl font-medium transition inline-flex items-center gap-2',
                                    busy ? 'bg-slate-300 text-slate-600' : 'bg-gradient-to-b from-indigo-600 to-indigo-500 text-white hover:from-indigo-500 hover:to-indigo-400']">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
-                    <span x-text="busy ? 'Processing…' : 'Unlock PDF'"></span>
+                    <span x-text="busy ? 'Processing…' : 'Unlock PDF'">Unlock PDF</span>
                   </button>
                 </div>
               </div>
