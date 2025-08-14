@@ -497,14 +497,7 @@ if ($action === 'blog') {
     <section class="max-w-5xl mx-auto">
       <div class="flex justify-between items-center py-2">
         <a href="index.php" aria-label="Go to home" class="flex items-center gap-3 hover:opacity-90">
-          <div class="w-9 h-9 rounded-xl bg-gradient-to-b from-indigo-600 to-violet-600 text-white grid place-items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
-              <path d="M8 3h5l5 5v11a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/>
-              <path d="M13 3v6h6"/>
-              <rect x="11" y="14" width="6" height="5" rx="1"/>
-              <path d="M14 13v-2a2.5 2.5 0 1 0-5 0"/>
-            </svg>
-          </div>
+          <img src="assets/logo.svg" alt="Remove Password from PDF" class="w-9 h-9 rounded-xl"/>
           <div class="leading-tight">
             <div class="text-base font-semibold">Remove Password from PDF</div>
             <div class="text-xs text-slate-500">Private • Fast</div>
@@ -557,14 +550,7 @@ if ($action === 'post') {
     <section class="max-w-3xl mx-auto">
       <div class="flex justify-between items-center py-2">
         <div class="flex items-center gap-3">
-          <div class="w-9 h-9 rounded-xl bg-gradient-to-b from-indigo-600 to-violet-600 text-white grid place-items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
-              <path d="M8 3h5l5 5v11a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/>
-              <path d="M13 3v6h6"/>
-              <rect x="11" y="14" width="6" height="5" rx="1"/>
-              <path d="M14 13v-2a2.5 2.5 0 1 0-5 0"/>
-            </svg>
-          </div>
+          <img src="assets/logo.svg" alt="Remove Password from PDF" class="w-9 h-9 rounded-xl"/>
           <div class="leading-tight">
             <div class="text-base font-semibold">Remove Password from PDF</div>
             <div class="text-xs text-slate-500">Private • Fast</div>
@@ -607,7 +593,7 @@ if ($action === 'contact' || $action === 'terms' || $action === 'privacy') {
     <section class="max-w-3xl mx-auto">
       <div class="flex justify-between items-center py-2">
         <div class="flex items-center gap-3">
-          <div class="w-9 h-9 rounded-xl bg-gradient-to-b from-indigo-600 to-violet-600 text-white grid place-items-center font-bold">RP</div>
+          <img src="assets/logo.svg" alt="Remove Password from PDF" class="w-9 h-9 rounded-xl"/>
           <div class="leading-tight">
             <div class="text-base font-semibold">Remove Password from PDF</div>
             <div class="text-xs text-slate-500">Private • Fast</div>
@@ -685,6 +671,8 @@ if ($action === 'download') {
   <script src="https://cdn.tailwindcss.com" defer></script>
   <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
   <meta name="description" content="Unlock your own password-protected PDF securely. No signup."/>
+  <link rel="icon" href="assets/logo.svg" type="image/svg+xml"/>
+  <link rel="apple-touch-icon" href="assets/logo.svg"/>
   <style>
     .glass{backdrop-filter: blur(12px)}
     [x-cloak]{display:none !important}
@@ -705,14 +693,7 @@ if ($action === 'download') {
         <!-- Header moved into the same container as main content -->
         <div class="flex justify-between items-center py-4">
           <a href="index.php" aria-label="Go to home" class="flex items-center gap-3 hover:opacity-90">
-            <div class="w-9 h-9 rounded-xl bg-gradient-to-b from-indigo-600 to-violet-600 text-white grid place-items-center">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
-                <path d="M8 3h5l5 5v11a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/>
-                <path d="M13 3v6h6"/>
-                <rect x="11" y="14" width="6" height="5" rx="1"/>
-                <path d="M14 13v-2a2.5 2.5 0 1 0-5 0"/>
-              </svg>
-            </div>
+            <img src="assets/logo.svg" alt="Remove Password from PDF" class="w-9 h-9 rounded-xl"/>
             <div class="leading-tight">
               <div class="text-base font-semibold">Remove Password from PDF</div>
               <div class="text-xs text-slate-500">Fast • Private • Free for everyone</div>
@@ -808,7 +789,7 @@ if ($action === 'download') {
               </div>
 
               <template x-if="downloadUrl">
-                <div class="mt-2 border border-emerald-200 bg-emerald-50 text-emerald-800 rounded-lg p-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                  <div class="mt-2 border border-emerald-200 bg-emerald-50 text-emerald-800 rounded-lg p-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                   <div class="flex items-center gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-emerald-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
                     <span class="text-sm">Your unlocked PDF is ready.</span>
@@ -821,7 +802,15 @@ if ($action === 'download') {
                 <div class="text-sm text-rose-700" x-text="error"></div>
               </template>
 
-              <p class="text-xs text-slate-500">We recommend removing sensitive docs after download. Files auto-delete within ~1 hour. Do not use this tool for illegal purposes or to access documents you do not own or are not authorized to modify.</p>
+              <div class="text-sm text-slate-700">
+                <h3 class="font-semibold mb-1">How To Unlock a PDF Online</h3>
+                <ol class="list-decimal pl-5 space-y-1">
+                  <li>Import or drag & drop your locked PDF file into our unlock tool.</li>
+                  <li>Type the password to access your PDF.</li>
+                  <li>Edit the PDF with our other online tools if needed.</li>
+                  <li>Download or share your unlocked PDF when ready—done!</li>
+                </ol>
+              </div>
 
               <!-- Plan messaging removed: fully free for now -->
             </form>
