@@ -90,25 +90,19 @@ $BLOG_POSTS = [
     'title' => 'Why a Paid PDF Unlocker Protects Your Privacy',
     'description' => 'Free sites often monetize with tracking or unclear data practices. Here’s why paying for privacy is worth it.',
     'date' => '2025-08-01',
-    'content' => '<p>"Free" often hides costs: ads, trackers, and unclear data retention. When documents matter, privacy should not be an afterthought. A paid service aligns incentives with you—the customer—not advertisers.</p>
-                 <p>We process files briefly, never store your password, and auto-delete uploads within ~1 hour. Your subscription funds uptime, safeguards, and support—not data monetization.</p>
-                 <h2 class="text-lg font-semibold mt-6">Paying for certainty</h2>
-                 <p>Predictable limits, priority processing, and transparent deletion policies mean you know exactly what happens to your files.</p>'
+  'content' => '<p>"Free" often hides costs: ads, trackers, and unclear data retention. When documents matter, privacy should not be an afterthought. A paid service aligns incentives with you—the customer—not advertisers.</p>
+         <p>We process files briefly, never store your password, and auto-delete uploads within ~1 hour.</p>
+         <h2 class="text-lg font-semibold mt-6">Paying for certainty</h2>
+         <p>Predictable limits and transparent deletion policies mean you know exactly what happens to your files.</p>
+         <p class="mt-4">Need to unlock your own PDF now? Try <a class="text-indigo-700 hover:underline" href="index.php">RemovePasswordfromPDF.com</a>.</p>'
   ],
   [
     'slug' => 'how-we-handle-your-files-and-passwords',
     'title' => 'How We Handle Your Files and Passwords',
     'description' => 'A clear, plain-English explanation of our short-lived processing and deletion timeline.',
     'date' => '2025-08-05',
-    'content' => '<p>Your PDF and password are used only to unlock your file. The password is never stored and is discarded immediately after processing. Files are auto-deleted within ~1 hour.</p>
-                 <p>We rely on proven, open-source tools (qpdf and Ghostscript) to remove protection when you provide the correct password.</p>'
-  ],
-  [
-    'slug' => 'qpdf-vs-ghostscript-which-one-is-better',
-    'title' => 'qpdf vs Ghostscript: Which One Is Better?',
-    'description' => 'We support both qpdf and Ghostscript. Here’s when each tends to work best.',
-    'date' => '2025-08-10',
-    'content' => '<p>qpdf is fast and reliable for many PDFs. Ghostscript can handle certain edge cases and complex PDFs better. We try qpdf first and fall back to Ghostscript if needed.</p>'
+  'content' => '<p>Your PDF and password are used only to unlock your file. The password is never stored and is discarded immediately after processing. Files are auto-deleted within ~1 hour.</p>
+         <p>For a quick unlock, use <a class="text-indigo-700 hover:underline" href="index.php">RemovePasswordfromPDF.com</a>.</p>'
   ],
   // New long-form SEO posts
   [
@@ -116,7 +110,7 @@ $BLOG_POSTS = [
     'title' => 'Remove Password from PDF: Complete Guide',
     'description' => 'Everything you need to know to remove password protection from your own PDFs safely and quickly.',
     'date' => '2025-08-11',
-    'content' => '<p>If you are searching for “Remove Password from PDF,” this guide explains the safest and fastest way to unlock a PDF you already own. When you know the correct password, you can remove it and save a clean copy so you don’t have to type the password each time.</p>
+  'content' => '<p>If you are searching for “Remove Password from PDF,” this guide explains the safest and fastest way to unlock a PDF you already own. When you know the correct password, you can remove it and save a clean copy so you don’t have to type the password each time.</p>
                  <h2 class="text-lg font-semibold mt-6">When it makes sense to remove a password</h2>
                  <ul class="list-disc pl-6 text-slate-700">
                    <li>You regularly access a document and want faster, offline access.</li>
@@ -131,17 +125,17 @@ $BLOG_POSTS = [
                    <li>Use the smallest file that meets your needs. If the PDF is huge, consider optimizing it first.</li>
                    <li>Keep a backup of the original, password-protected copy for safekeeping.</li>
                  </ol>
-                 <p class="mt-4">Ready to go? <a class="text-indigo-700 hover:underline" href="index.php">Unlock your PDF</a> now.</p>'
+                 <p class="mt-4">Ready to go? Open <a class="text-indigo-700 hover:underline" href="index.php">RemovePasswordfromPDF.com</a> and unlock your PDF now.</p>'
   ],
   [
     'slug' => 'how-to-remove-password-from-pdf-step-by-step',
     'title' => 'How to Remove Password from PDF (Step‑by‑Step)',
     'description' => 'A simple, step‑by‑step walkthrough to remove a password from a PDF you own.',
     'date' => '2025-08-12',
-    'content' => '<p>Wondering how to remove password from PDF? If you already know the password, the process is straightforward. Follow these steps to create an unlocked copy of your document.</p>
+  'content' => '<p>Wondering how to remove password from PDF? If you already know the password, the process is straightforward. Follow these steps to create an unlocked copy of your document.</p>
                  <h2 class="text-lg font-semibold mt-6">Step‑by‑step</h2>
                  <ol class="list-decimal pl-6 text-slate-700">
-                   <li>Open <a class="text-indigo-700 hover:underline" href="index.php">Remove Password from PDF</a>.</li>
+           <li>Open <a class="text-indigo-700 hover:underline" href="index.php">RemovePasswordfromPDF.com</a>.</li>
                    <li>Choose your PDF (drag & drop works too).</li>
                    <li>Enter the correct password when prompted.</li>
                    <li>Click “Unlock PDF” and wait a moment.</li>
@@ -161,7 +155,7 @@ $BLOG_POSTS = [
     'title' => 'Remove Password from PDF Online Safely',
     'description' => 'How to remove password from PDF online while keeping privacy and speed top of mind.',
     'date' => '2025-08-13',
-    'content' => '<p>Searching for “remove password from pdf” usually returns a mix of tools. The safest approach is the one that minimizes data exposure and time‑to‑download. Here’s what to look for and how to do it here.</p>
+  'content' => '<p>Searching for “remove password from pdf” usually returns a mix of tools. The safest approach is the one that minimizes data exposure and time‑to‑download. Here’s what to look for and how to do it here.</p>
                  <h2 class="text-lg font-semibold mt-6">What to look for</h2>
                  <ul class="list-disc pl-6 text-slate-700">
                    <li>Short‑lived processing and automatic deletion.</li>
@@ -174,14 +168,14 @@ $BLOG_POSTS = [
                    <li>Enter the correct password.</li>
                    <li>Download the unlocked file—done.</li>
                  </ol>
-                 <p class="mt-4">Start now: <a class="text-indigo-700 hover:underline" href="index.php">Remove a PDF password</a>.</p>'
+                 <p class="mt-4">Start now at <a class="text-indigo-700 hover:underline" href="index.php">RemovePasswordfromPDF.com</a>.</p>'
   ],
   [
     'slug' => 'how-do-i-remove-a-password-from-a-pdf',
     'title' => 'How Do I Remove a Password from a PDF?',
     'description' => 'Answers to the most common questions about removing a password from a PDF you already have access to.',
     'date' => '2025-08-14',
-    'content' => '<p>“How do I remove a password from a PDF?” If you know the password, it’s simple: unlock once, save an unprotected copy, and skip the prompt next time. Here are quick answers to common questions.</p>
+  'content' => '<p>“How do I remove a password from a PDF?” If you know the password, it’s simple: unlock once, save an unprotected copy, and skip the prompt next time. Here are quick answers to common questions.</p>
                  <h2 class="text-lg font-semibold mt-6">Do I need special software?</h2>
                  <p>No installation required here. You can unlock a PDF in your browser and download the new copy.</p>
                  <h2 class="text-lg font-semibold mt-6">Is this legal?</h2>
@@ -189,14 +183,15 @@ $BLOG_POSTS = [
                  <h2 class="text-lg font-semibold mt-6">Will my password be stored?</h2>
                  <p>Your password is used only during processing to unlock the file and is not stored. Uploads are auto‑deleted after a short period.</p>
                  <h2 class="text-lg font-semibold mt-6">What if I forget the password?</h2>
-                 <p>We can’t help recover or crack passwords. You must know the correct password to unlock the file.</p>'
+         <p>We can’t help recover or crack passwords. You must know the correct password to unlock the file.</p>
+         <p class="mt-4">Need it done now? Use <a class="text-indigo-700 hover:underline" href="index.php">RemovePasswordfromPDF.com</a> to unlock your PDF in seconds.</p>'
   ],
   [
     'slug' => 'how-to-remove-password-protection-from-pdf',
     'title' => 'How to Remove Password Protection from PDF',
     'description' => 'A practical walkthrough to remove password protection from a PDF you own, plus tips and FAQs.',
     'date' => '2025-08-15',
-    'content' => '<p>If you’re asking how to remove password protection from PDF, the core requirement is simple: you must already know the password. Once entered, you can save an unlocked version for faster access.</p>
+  'content' => '<p>If you’re asking how to remove password protection from PDF, the core requirement is simple: you must already know the password. Once entered, you can save an unlocked version for faster access.</p>
                  <h2 class="text-lg font-semibold mt-6">Walkthrough</h2>
                  <ol class="list-decimal pl-6 text-slate-700">
                    <li>Open the tool in your browser.</li>
@@ -208,7 +203,7 @@ $BLOG_POSTS = [
                  <ul class="list-disc pl-6 text-slate-700">
                    <li>Keep the original protected file in a safe place.</li>
                    <li>Remove sensitive files from shared devices after use.</li>
-                   <li>Upgrade if your file exceeds the Free plan size limit.</li>
+                   <li>Be mindful of large files on slow connections.</li>
                  </ul>'
   ],
   [
@@ -216,7 +211,7 @@ $BLOG_POSTS = [
     'title' => 'How Can I Remove Password from PDF?',
     'description' => 'Clear steps to remove a password from a PDF you own, including troubleshooting advice and FAQs.',
     'date' => '2025-08-16',
-    'content' => '<p>“How can I remove password from pdf?” It’s easy if you have the correct password: upload, unlock, download. Below are steps and quick troubleshooting tips.</p>
+  'content' => '<p>“How can I remove password from pdf?” It’s easy if you have the correct password: upload, unlock, download. Below are steps and quick troubleshooting tips.</p>
                  <h2 class="text-lg font-semibold mt-6">Steps</h2>
                  <ol class="list-decimal pl-6 text-slate-700">
                    <li>Upload your PDF (drag & drop supported).</li>
@@ -229,14 +224,14 @@ $BLOG_POSTS = [
                    <li>If the PDF is very large, consider compressing it or upgrading your plan.</li>
                    <li>If the original file is damaged, re‑obtain it from the source and try again.</li>
                  </ul>
-                 <p class="mt-4">When you’re ready, <a class="text-indigo-700 hover:underline" href="index.php">remove a PDF password</a> in seconds.</p>'
+                 <p class="mt-4">When you’re ready, open <a class="text-indigo-700 hover:underline" href="index.php">RemovePasswordfromPDF.com</a> to remove a PDF password in seconds.</p>'
   ],
   [
     'slug' => 'how-do-i-remove-password-protection-from-pdf',
     'title' => 'How Do I Remove Password Protection from PDF?',
     'description' => 'Direct, step‑by‑step answer with privacy notes for removing password protection from a PDF you own.',
     'date' => '2025-08-17',
-    'content' => '<p>If you are asking “how do I remove password protection from PDF,” the key is that you must already know the password. Once entered, you can save an unlocked copy and skip future prompts.</p>
+  'content' => '<p>If you are asking “how do I remove password protection from PDF,” the key is that you must already know the password. Once entered, you can save an unlocked copy and skip future prompts.</p>
                  <h2 class="text-lg font-semibold mt-6">Quick steps</h2>
                  <ol class="list-decimal pl-6 text-slate-700">
                    <li>Open the tool in your browser.</li>
@@ -244,14 +239,15 @@ $BLOG_POSTS = [
                    <li>Download the unlocked version.</li>
                  </ol>
                  <h2 class="text-lg font-semibold mt-6">Privacy and limits</h2>
-                 <p>We process your file briefly to remove protection, never store your password, and auto‑delete uploads after a short period. Free plan limits apply for large files.</p>'
+                 <p>We process your file briefly to remove protection, never store your password, and auto‑delete uploads after a short period.</p>
+                 <p class="mt-4">Try it now at <a class="text-indigo-700 hover:underline" href="index.php">RemovePasswordfromPDF.com</a>.</p>'
   ],
   [
     'slug' => 'how-to-remove-password-from-pdf-file',
     'title' => 'How to Remove Password from PDF File',
     'description' => 'Clear guide to remove a password from a PDF file you own, with tips for common errors.',
     'date' => '2025-08-18',
-    'content' => '<p>Looking for how to remove password from PDF file? If you own the document and know the password, you can unlock it in a few clicks and save a clean copy.</p>
+  'content' => '<p>Looking for how to remove password from PDF file? If you own the document and know the password, you can unlock it in a few clicks and save a clean copy.</p>
                  <h2 class="text-lg font-semibold mt-6">Guide</h2>
                  <ol class="list-decimal pl-6 text-slate-700">
                    <li>Select your password‑protected PDF.</li>
@@ -262,15 +258,16 @@ $BLOG_POSTS = [
                  <ul class="list-disc pl-6 text-slate-700">
                    <li>Re‑type the password carefully if you see an error.</li>
                    <li>Try a fresh copy of the PDF if it appears corrupted.</li>
-                   <li>Upgrade if your file exceeds the Free plan size.</li>
-                 </ul>'
+                   <li>Very large files may take longer to upload on slow connections.</li>
+                 </ul>
+                 <p class="mt-4">Unlock your PDF now at <a class="text-indigo-700 hover:underline" href="index.php">RemovePasswordfromPDF.com</a>.</p>'
   ],
   [
     'slug' => 'how-do-i-remove-a-password-from-a-pdf-file',
     'title' => 'How Do I Remove a Password from a PDF File?',
     'description' => 'Simple steps to remove a password from a PDF file you own, plus FAQs.',
     'date' => '2025-08-19',
-    'content' => '<p>“How do I remove a password from a PDF file?” Enter the correct password once, unlock, and save an open copy. Here’s the quick process and answers to common questions.</p>
+  'content' => '<p>“How do I remove a password from a PDF file?” Enter the correct password once, unlock, and save an open copy. Here’s the quick process and answers to common questions.</p>
                  <h2 class="text-lg font-semibold mt-6">Process</h2>
                  <ol class="list-decimal pl-6 text-slate-700">
                    <li>Upload your PDF file.</li>
@@ -282,42 +279,43 @@ $BLOG_POSTS = [
                    <li><strong>Can you crack it?</strong> No—you must know the password.</li>
                    <li><strong>Is the password stored?</strong> No, it is used only during processing.</li>
                    <li><strong>How long are files kept?</strong> Uploads are auto‑deleted shortly after processing.</li>
-                 </ul>'
+                 </ul>
+                 <p class="mt-4">Do it now at <a class="text-indigo-700 hover:underline" href="index.php">RemovePasswordfromPDF.com</a>.</p>'
   ],
   [
     'slug' => 'how-to-remove-password-from-password-protected-pdf',
     'title' => 'How to Remove Password from a Password‑Protected PDF',
     'description' => 'Unlock a PDF you own by entering its password and saving an unprotected copy.',
     'date' => '2025-08-20',
-    'content' => '<p>To remove password from a password‑protected PDF, you must have the correct password. Once verified, you can save an unlocked version for faster access.</p>
+  'content' => '<p>To remove password from a password‑protected PDF, you must have the correct password. Once verified, you can save an unlocked version for faster access.</p>
                  <h2 class="text-lg font-semibold mt-6">Steps</h2>
                  <ol class="list-decimal pl-6 text-slate-700">
                    <li>Upload the protected PDF.</li>
                    <li>Enter the correct password.</li>
                    <li>Download your unlocked copy.</li>
                  </ol>
-                 <p class="mt-4">Only remove protection from files you own or are authorized to modify.</p>'
+                 <p class="mt-4">Only remove protection from files you own or are authorized to modify. When ready, head to <a class="text-indigo-700 hover:underline" href="index.php">RemovePasswordfromPDF.com</a>.</p>'
   ],
   [
     'slug' => 'how-to-remove-password-protect-from-pdf',
     'title' => 'Remove Password Protection from a PDF (Quick Guide)',
     'description' => 'A concise guide often searched as “how to remove password protect from pdf.”',
     'date' => '2025-08-21',
-    'content' => '<p>Many people search “how to remove password protect from pdf.” The phrasing may vary, but the steps are the same: if you know the password, you can remove protection and save a clean copy.</p>
+  'content' => '<p>Many people search “how to remove password protect from pdf.” The phrasing may vary, but the steps are the same: if you know the password, you can remove protection and save a clean copy.</p>
                  <h2 class="text-lg font-semibold mt-6">Quick guide</h2>
                  <ol class="list-decimal pl-6 text-slate-700">
                    <li>Upload your PDF.</li>
                    <li>Type the correct password.</li>
                    <li>Download the unlocked PDF.</li>
                  </ol>
-                 <p class="mt-4">For sensitive documents, delete local copies when finished and keep a secure backup of the original.</p>'
+                 <p class="mt-4">For sensitive documents, delete local copies when finished and keep a secure backup of the original. To unlock now, visit <a class="text-indigo-700 hover:underline" href="index.php">RemovePasswordfromPDF.com</a>.</p>'
   ],
   [
     'slug' => 'how-to-remove-a-password-from-a-pdf-mac-windows-mobile',
     'title' => 'How to Remove a Password from a PDF (Mac, Windows, Mobile)',
     'description' => 'Platform‑specific tips for removing a password from a PDF on desktop and mobile.',
     'date' => '2025-08-22',
-    'content' => '<p>Here’s how to remove a password from a PDF whether you are on Mac, Windows, iOS, or Android—always assuming you know the correct password and own the file.</p>
+  'content' => '<p>Here’s how to remove a password from a PDF whether you are on Mac, Windows, iOS, or Android—always assuming you know the correct password and own the file.</p>
                  <h2 class="text-lg font-semibold mt-6">Mac & Windows</h2>
                  <ul class="list-disc pl-6 text-slate-700">
                    <li>Use the browser‑based tool to upload, authenticate with the password, and download the unlocked copy.</li>
@@ -327,7 +325,8 @@ $BLOG_POSTS = [
                  <ul class="list-disc pl-6 text-slate-700">
                    <li>Open the site in your mobile browser, select the PDF from Files or a cloud drive, enter the password, and download.</li>
                    <li>On mobile, consider clearing downloads after use if the document is sensitive.</li>
-                 </ul>'
+                 </ul>
+                 <p class="mt-4">Unlock your PDF across devices at <a class="text-indigo-700 hover:underline" href="index.php">RemovePasswordfromPDF.com</a>.</p>'
   ],
 ];
 
@@ -426,7 +425,14 @@ if ($action === 'blog') {
     <section class="max-w-5xl mx-auto">
       <div class="flex justify-between items-center py-2">
         <a href="index.php" aria-label="Go to home" class="flex items-center gap-3 hover:opacity-90">
-          <div class="w-9 h-9 rounded-xl bg-gradient-to-b from-indigo-600 to-violet-600 text-white grid place-items-center font-bold">RP</div>
+          <div class="w-9 h-9 rounded-xl bg-gradient-to-b from-indigo-600 to-violet-600 text-white grid place-items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
+              <path d="M8 3h5l5 5v11a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/>
+              <path d="M13 3v6h6"/>
+              <rect x="11" y="14" width="6" height="5" rx="1"/>
+              <path d="M14 13v-2a2.5 2.5 0 1 0-5 0"/>
+            </svg>
+          </div>
           <div class="leading-tight">
             <div class="text-base font-semibold">Remove Password from PDF</div>
             <div class="text-xs text-slate-500">Private • Fast</div>
@@ -478,7 +484,14 @@ if ($action === 'post') {
     <section class="max-w-3xl mx-auto">
       <div class="flex justify-between items-center py-2">
         <div class="flex items-center gap-3">
-          <div class="w-9 h-9 rounded-xl bg-gradient-to-b from-indigo-600 to-violet-600 text-white grid place-items-center font-bold">RP</div>
+          <div class="w-9 h-9 rounded-xl bg-gradient-to-b from-indigo-600 to-violet-600 text-white grid place-items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
+              <path d="M8 3h5l5 5v11a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/>
+              <path d="M13 3v6h6"/>
+              <rect x="11" y="14" width="6" height="5" rx="1"/>
+              <path d="M14 13v-2a2.5 2.5 0 1 0-5 0"/>
+            </svg>
+          </div>
           <div class="leading-tight">
             <div class="text-base font-semibold">Remove Password from PDF</div>
             <div class="text-xs text-slate-500">Private • Fast</div>
@@ -611,7 +624,14 @@ if ($action === 'download') {
         <!-- Header moved into the same container as main content -->
         <div class="flex justify-between items-center py-4">
           <a href="index.php" aria-label="Go to home" class="flex items-center gap-3 hover:opacity-90">
-            <div class="w-9 h-9 rounded-xl bg-gradient-to-b from-indigo-600 to-violet-600 text-white grid place-items-center font-bold">RP</div>
+            <div class="w-9 h-9 rounded-xl bg-gradient-to-b from-indigo-600 to-violet-600 text-white grid place-items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
+                <path d="M8 3h5l5 5v11a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/>
+                <path d="M13 3v6h6"/>
+                <rect x="11" y="14" width="6" height="5" rx="1"/>
+                <path d="M14 13v-2a2.5 2.5 0 1 0-5 0"/>
+              </svg>
+            </div>
             <div class="leading-tight">
               <div class="text-base font-semibold">Remove Password from PDF</div>
               <div class="text-xs text-slate-500">Fast • Private • Free for everyone</div>
