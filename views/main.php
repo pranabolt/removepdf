@@ -4,7 +4,7 @@ $desc = 'Unlock your own password-protected PDF securely. No signup.';
 $includeAlpine = true;
 require_once __DIR__ . '/partials/header.php';
 ?>
-        <div class="flex flex-col lg:flex-row lg:gap-12 xl:gap-16 items-start" x-data="uploader()">
+  <div class="flex flex-col lg:flex-row lg:gap-12 xl:gap-16 items-center lg:items-start" x-data="uploader()">
           <div class="flex-1 lg:max-w-xl order-2 lg:order-1">
             <div class="inline-flex items-center gap-2 text-xs px-2 py-1 rounded-full bg-indigo-50 text-indigo-700 ring-1 ring-indigo-200">
               Private • Fast • No installations
@@ -54,7 +54,7 @@ require_once __DIR__ . '/partials/header.php';
           </div>
 
           <!-- APP CARD -->
-          <div class="flex-1 lg:max-w-md order-1 lg:order-2 mb-8 lg:mb-0">
+          <div class="w-full max-w-md lg:max-w-md order-1 lg:order-2 mb-8 lg:mb-0 mx-auto">
             <div class="sticky top-8">
             <form x-ref="form" class="space-y-4" @submit.prevent="submit()">
               <input type="hidden" name="action" value="process" />
