@@ -1,0 +1,10 @@
+# Protect storage directory from direct web access
+<IfModule mod_authz_core.c>
+  Require all denied
+</IfModule>
+<IfModule !mod_authz_core.c>
+  Deny from all
+</IfModule>
+
+# No directory browsing
+Options -Indexes
