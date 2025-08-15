@@ -1,14 +1,7 @@
 <?php
 /* ===========================================================================
    Remove Password from PDF — Single-file app (index.php)
-   Stack: PHP 8+, Tailwind CDN, Alpine.js
-   Processing: qpdf (preferred) or Ghostscript (fallback)
-   ---------------------------------------------------------------------------
-   QUICK START
-   - Upload this file as public/index.php
-   - Ensure PHP can run shell_exec and either `qpdf` or `gs` is installed.
-   - Make sure the web user can write to STORAGE_DIR (created automatically).
-   =========================================================================== */
+ */
 
 declare(strict_types=1);
 session_start();
@@ -491,6 +484,8 @@ if ($action === 'blog') {
   <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title><?php echo htmlspecialchars($title); ?></title>
   <meta name="description" content="<?php echo htmlspecialchars($desc); ?>"/>
+  <link rel="icon" href="assets/logo.svg" type="image/svg+xml"/>
+  <link rel="apple-touch-icon" href="assets/logo.svg"/>
   <script src="https://cdn.tailwindcss.com"></script>
   </head><body class="min-h-screen flex flex-col bg-gradient-to-b from-indigo-50 via-white to-slate-100 text-slate-900">
   <main class="flex-1 px-6 py-12">
@@ -538,6 +533,8 @@ if ($action === 'post') {
   <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title><?php echo htmlspecialchars($title); ?></title>
   <meta name="description" content="<?php echo htmlspecialchars($desc); ?>"/>
+  <link rel="icon" href="assets/logo.svg" type="image/svg+xml"/>
+  <link rel="apple-touch-icon" href="assets/logo.svg"/>
   <script src="https://cdn.tailwindcss.com"></script>
   <script type="application/ld+json">{
     "@context":"https://schema.org","@type":"Article",
@@ -587,6 +584,8 @@ if ($action === 'contact' || $action === 'terms' || $action === 'privacy') {
   <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title><?php echo htmlspecialchars($meta['title']); ?></title>
   <meta name="description" content="<?php echo htmlspecialchars($meta['desc']); ?>"/>
+  <link rel="icon" href="assets/logo.svg" type="image/svg+xml"/>
+  <link rel="apple-touch-icon" href="assets/logo.svg"/>
   <script src="https://cdn.tailwindcss.com"></script>
   </head><body class="min-h-screen flex flex-col bg-gradient-to-b from-indigo-50 via-white to-slate-100 text-slate-900">
   <main class="flex-1 px-6 py-12">
@@ -695,13 +694,13 @@ if ($action === 'download') {
           <a href="index.php" aria-label="Go to home" class="flex items-center gap-3 hover:opacity-90">
             <img src="assets/logo.svg" alt="Remove Password from PDF" class="w-9 h-9 rounded-xl"/>
             <div class="leading-tight">
-              <div class="text-base font-semibold">Remove Password from PDF</div>
-              <div class="text-xs text-slate-500">Fast • Private • Free for everyone</div>
+              <div class="text-xl font-semibold">Remove Password from PDF</div>
+              <div class="text-[0.9375rem] text-slate-500">Fast • Private • Free for everyone</div>
             </div>
           </a>
           <nav class="flex items-center gap-4 text-sm font-medium"></nav>
         </div>
-        <div class="grid md:grid-cols-2 gap-10 items-start">
+        <div class="grid md:grid-cols-2 gap-10 items-start" x-data="uploader()">
           <div class="order-2 md:order-1">
             <div class="inline-flex items-center gap-2 text-xs px-2 py-1 rounded-full bg-indigo-50 text-indigo-700 ring-1 ring-indigo-200">
               Private • Fast • No installations
@@ -712,31 +711,37 @@ if ($action === 'download') {
               We don’t crack files—you must know the password.
             </p>
             <ul class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-slate-700">
-              <li class="flex items-center gap-2"><span class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 grid place-items-center text-xs">✓</span> Files auto-delete in ~1 hour</li>
-              <li class="flex items-center gap-2"><span class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 grid place-items-center text-xs">✓</span> Password never stored</li>
-              <li class="flex items-center gap-2"><span class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 grid place-items-center text-xs">✓</span> No signup or install</li>
-              <li class="flex items-center gap-2"><span class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 grid place-items-center text-xs">✓</span> Large files supported (no signup)</li>
+<li class="flex items-center gap-2"><span class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 grid place-items-center text-xs">✓</span> Files erased automatically after processing</li> <li class="flex items-center gap-2"><span class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 grid place-items-center text-xs">✓</span> Passwords never saved or logged</li> <li class="flex items-center gap-2"><span class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 grid place-items-center text-xs">✓</span> Works instantly — no account needed</li> <li class="flex items-center gap-2"><span class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 grid place-items-center text-xs">✓</span> Handles large PDFs with ease</li>
             </ul>
             <!-- CTA just below the four lines -->
-            <div class="mt-6 max-w-md">
+      <div class="mt-6 max-w-md">
               <label class="block text-sm font-medium">Your PDF</label>
-              <div class="mt-1 group cursor-pointer border-2 border-dashed rounded-xl p-4 sm:p-6 transition bg-white hover:bg-slate-50 border-slate-300" onclick="document.getElementById('file-input-main')?.click()">
+    <div class="mt-1 group cursor-pointer border-2 border-dashed rounded-xl p-4 sm:p-6 transition bg-white hover:bg-slate-50 border-slate-300"
+             @dragover.prevent="drag=true" 
+             @dragleave.prevent="drag=false" 
+             @drop.prevent="onDrop($event)"
+             :class="drag ? 'border-indigo-500 bg-indigo-50' : ''">
+        <!-- Left CTA own input -->
+  <input id="file-input-left" x-ref="fileLeft" type="file" accept="application/pdf" class="hidden" @change="onFileGeneric($event)" />
                 <div class="flex items-center gap-3 flex-wrap">
-                  <button type="button" onclick="document.getElementById('file-input-main')?.click()" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-900 text-white group-hover:bg-slate-800">
+      <label for="file-input-left" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-900 text-white group-hover:bg-slate-800 cursor-pointer" role="button" tabindex="0">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
                     Choose PDF
-                  </button>
+    </label>
                   <span class="text-sm text-slate-700 font-medium underline decoration-dashed underline-offset-4">or drag & drop your .pdf</span>
                 </div>
-                <div class="mt-2 text-xs text-slate-500">PDF only • Max ~<?php echo (int)(effective_upload_limit_bytes() / 1024 / 1024); ?> MB (server limit)</div>
+                <div class="mt-2 text-xs text-slate-500">PDF only</div>
+                <template x-if="fileName">
+                  <div class="mt-1 text-sm font-medium text-indigo-700" x-text="fileName"></div>
+                </template>
               </div>
             </div>
             <div class="mt-6 flex gap-3"></div>
           </div>
 
           <!-- APP CARD -->
-          <div x-data="uploader()" :class="{'text-left': align==='left','text-center': align==='center','text-right': align==='right'}" class="p-0 order-1 md:order-2">
-            <form class="space-y-4" @submit.prevent="submit()">
+          <div :class="{'text-left': align==='left','text-center': align==='center','text-right': align==='right'}" class="p-0 order-1 md:order-2">
+            <form x-ref="form" class="space-y-4" @submit.prevent="submit()">
               <input type="hidden" name="action" value="process" />
               <input type="hidden" name="csrf" value="<?php echo htmlspecialchars(csrf_token(), ENT_QUOTES); ?>" />
 
@@ -744,17 +749,17 @@ if ($action === 'download') {
               <div class="space-y-2 max-w-md">
                 <label class="block text-sm font-medium">Your PDF</label>
        <div class="mt-1 group cursor-pointer border-2 border-dashed rounded-xl p-4 sm:p-6 transition border-slate-300 bg-white hover:bg-slate-50"
-         @dragover.prevent="drag=true" @dragleave.prevent="drag=false" @drop.prevent="onDrop($event)" @click="$refs.file.click()"
+         @dragover.prevent="drag=true" @dragleave.prevent="drag=false" @drop.prevent="onDrop($event)" @click="$refs.file && $refs.file.click()"
          :class="drag ? 'border-indigo-500 bg-indigo-50' : ''">
-                  <input id="file-input-main" type="file" x-ref="file" @change="onFile()" accept="application/pdf" class="hidden"/>
+                  <input id="file-input-main" name="pdf" type="file" x-ref="file" @change="onFile()" accept="application/pdf" class="hidden"/>
                   <div class="flex items-center gap-3 flex-wrap justify-start text-left">
-                    <button type="button" @click.stop="$refs.file.click()" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-900 text-white group-hover:bg-slate-800">
+                    <label for="file-input-main" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-900 text-white group-hover:bg-slate-800 cursor-pointer" role="button" tabindex="0">
                       <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
                       Choose PDF
-                    </button>
+                    </label>
                     <span class="text-sm text-slate-700 font-medium underline decoration-dashed underline-offset-4">or drag & drop your .pdf</span>
                   </div>
-                  <div class="mt-2 text-xs text-slate-500">PDF only • Max ~<?php echo (int)(effective_upload_limit_bytes() / 1024 / 1024); ?> MB (server limit)</div>
+                  <div class="mt-2 text-xs text-slate-500">PDF only</div>
                   <template x-if="fileName">
                     <div class="mt-1 text-sm font-medium text-indigo-700" x-text="fileName"></div>
                   </template>
@@ -764,7 +769,8 @@ if ($action === 'download') {
               <!-- Password -->
               <div class="max-w-md">
                 <label class="block text-sm font-medium mb-1">Password</label>
-                <input type="password" x-ref="pwd" minlength="1" required placeholder="Enter the PDF password"
+                <input type="password" name="password" x-ref="pwd" minlength="1" required placeholder="Enter the PDF password" 
+                       autocomplete="off" autocapitalize="none" spellcheck="false"
                        class="bg-white rounded-lg w-full h-10 text-sm px-3 outline-none ring-1 ring-slate-300 focus:ring-2 focus:ring-indigo-600"/>
                 <p class="mt-1 text-xs text-slate-500">Used only to unlock your file during processing, then discarded.</p>
               </div>
@@ -775,17 +781,11 @@ if ($action === 'download') {
                   <button type="button" @click="reset()" :disabled="busy"
                           class="px-3 py-2 rounded-xl border border-slate-300 text-slate-700 hover:bg-slate-50 disabled:opacity-50">Clear</button>
       <button type="submit" :disabled="busy || !file"
-        class="px-4 py-2 rounded-xl font-medium transition inline-flex items-center gap-2 bg-gradient-to-b from-indigo-600 to-indigo-500 text-white hover:from-indigo-500 hover:to-indigo-400 disabled:opacity-60 disabled:cursor-not-allowed"
+        class="px-4 py-2 rounded-xl font-medium transition inline-flex items-center bg-gradient-to-b from-indigo-600 to-indigo-500 text-white hover:from-indigo-500 hover:to-indigo-400 disabled:opacity-60 disabled:cursor-not-allowed"
         :class="busy ? 'bg-slate-300 text-slate-600 hover:from-none hover:to-none' : ''">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
                     <span x-text="busy ? 'Processing…' : 'Unlock PDF'">Unlock PDF</span>
                   </button>
                 </div>
-              </div>
-
-              <!-- Progress -->
-              <div class="h-2 w-full bg-slate-100 rounded-full overflow-hidden" x-cloak x-show="busy">
-                <div class="h-full bg-indigo-500 transition-all" :style="`width:${progress}%`"></div>
               </div>
 
               <template x-if="downloadUrl">
@@ -803,13 +803,33 @@ if ($action === 'download') {
               </template>
 
               <div class="text-sm text-slate-700">
-                <h3 class="font-semibold mb-1">How To Unlock a PDF Online</h3>
-                <ol class="list-decimal pl-5 space-y-1">
-                  <li>Import or drag & drop your locked PDF file into our unlock tool.</li>
-                  <li>Type the password to access your PDF.</li>
-                  <li>Edit the PDF with our other online tools if needed.</li>
-                  <li>Download or share your unlocked PDF when ready—done!</li>
-                </ol>
+                <h4 class="text-base font-semibold mt-2">How To Unlock a PDF Online?</h4>
+                <ul class="mt-2 space-y-2">
+                  <li class="flex items-start gap-3">
+                    <span class="inline-flex items-center justify-center h-6 w-6 rounded-full bg-emerald-100">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-emerald-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+                    </span>
+                    <span>Drop the locked PDF into the secure unlock tool.</span>
+                  </li>
+                  <li class="flex items-start gap-3">
+                    <span class="inline-flex items-center justify-center h-6 w-6 rounded-full bg-emerald-100">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-emerald-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+                    </span>
+                    <span>Enter the password to open the file.</span>
+                  </li>
+                  <li class="flex items-start gap-3">
+                    <span class="inline-flex items-center justify-center h-6 w-6 rounded-full bg-emerald-100">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-emerald-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+                    </span>
+                    <span>Instantly download or share the unlocked PDF.</span>
+                  </li>
+                  <li class="flex items-start gap-3">
+                    <span class="inline-flex items-center justify-center h-6 w-6 rounded-full bg-emerald-100">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-emerald-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+                    </span>
+                    <span>Fast. Private. Hassle-free.</span>
+                  </li>
+                </ul>
               </div>
 
               <!-- Plan messaging removed: fully free for now -->
@@ -846,10 +866,21 @@ if ($action === 'download') {
   showBenefits: false,
 
         reset() {
+          if (this.$refs.form) this.$refs.form.reset();
           if (this.$refs.file) this.$refs.file.value = '';
+          if (this.$refs.fileLeft) this.$refs.fileLeft.value = '';
           if (this.$refs.pwd) this.$refs.pwd.value = '';
           this.drag = false;
           this.file = null; this.fileName = ''; this.error = ''; this.downloadUrl = ''; this.progress = 0; this.busy = false; this.status = '';
+        },
+        onFileGeneric(e) {
+          const f = e.target && e.target.files && e.target.files[0];
+          if (!f) { this.file = null; this.fileName = ''; return; }
+          if (!f.name.toLowerCase().endsWith('.pdf')) {
+            this.error = 'Only PDF files are allowed.'; e.target.value = ''; this.file = null; this.fileName = ''; return;
+          }
+          this.error = ''; this.file = f; this.fileName = f.name;
+          this.$nextTick(() => { if (this.$refs.pwd) this.$refs.pwd.focus(); });
         },
         onFile() {
           const f = this.$refs.file.files[0];
@@ -858,28 +889,27 @@ if ($action === 'download') {
             this.error = 'Only PDF files are allowed.'; this.$refs.file.value = ''; this.file = null; this.fileName = ''; return;
           }
           // Optional soft guard: extremely large files may fail in browser limits
-          const maxLimit = <?php echo (int)(effective_upload_limit_bytes()); ?>;
-          if (f.size > maxLimit) { this.error = 'File is larger than the maximum allowed size.'; this.file = null; this.fileName = ''; return; }
+          // Optional: client-side soft limit removed to avoid surfacing server numbers
           this.error = ''; this.file = f; this.fileName = f.name;
+          // focus password prompt to guide user next
+          this.$nextTick(() => { if (this.$refs.pwd) this.$refs.pwd.focus(); });
         },
         onDrop(e) {
           this.drag = false;
           const f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
           if (!f) return;
           if (!f.name.toLowerCase().endsWith('.pdf')) { this.error = 'Only PDF files are allowed.'; this.file = null; this.fileName = ''; return; }
-          const maxLimit = <?php echo (int)(effective_upload_limit_bytes()); ?>;
-          if (f.size > maxLimit) { this.error = 'File is larger than the maximum allowed size.'; this.file = null; this.fileName = ''; return; }
+          // Optional: client-side soft limit removed to avoid surfacing server numbers
           this.error = ''; this.file = f; this.fileName = f.name;
+          this.$nextTick(() => { if (this.$refs.pwd) this.$refs.pwd.focus(); });
         },
         async submit() {
           if (this.busy || !this.file) return;
           this.error = ''; this.downloadUrl = ''; this.status = 'Uploading…'; this.busy = true; this.progress = 20;
 
           // Build FormData and POST to this same file (action=process)
-          const fd = new FormData();
-          fd.append('action', 'process');
-          fd.append('pdf', this.file);
-          fd.append('password', this.$refs.pwd.value);
+          const fd = new FormData(this.$refs.form);
+          fd.set('pdf', this.file);
 
           try {
             const res = await fetch('index.php', { method: 'POST', body: fd });
@@ -907,10 +937,9 @@ if ($action === 'download') {
     (function () {
       try {
         const u = uploader();
-        ['align','drag','file','fileName','busy','progress','status','error','downloadUrl','reset','onFile','onDrop','submit']
+        ['align','drag','file','fileName','busy','progress','status','error','downloadUrl','reset','onFileGeneric','onFile','onDrop','submit']
           .forEach(k => { if (!(k in u)) throw new Error('Missing: ' + k) });
-        console.log('UI self-test passed');
-      } catch (e) { console.error('UI self-test failed', e); }
+      } catch (e) { /* no-op */ }
     })();
   </script>
 </body>
